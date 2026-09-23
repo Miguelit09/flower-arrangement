@@ -1,0 +1,51 @@
+.garden {
+  position: relative;
+  flex: 1;
+  min-height: 280px;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  isolation: isolate;
+}
+
+.grass {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 100%, #4f8f5c 0%, transparent 55%),
+    repeating-linear-gradient(
+      -12deg,
+      transparent 0 10px,
+      rgba(30, 77, 50, 0.04) 10px 12px
+    ),
+    linear-gradient(180deg, #8ecf8a 0%, var(--color-grass) 45%, var(--color-grass-deep) 100%);
+}
+
+.haze {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 15%, rgba(197, 228, 240, 0.45), transparent 50%);
+  pointer-events: none;
+}
+
+.slot {
+  position: absolute;
+  z-index: 1;
+  will-change: transform;
+}
+
+.hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.75rem;
+  margin: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 4px rgba(30, 77, 50, 0.55);
+  pointer-events: none;
+  z-index: 2;
+}
