@@ -5,8 +5,8 @@ import {
   type PlacedFlower,
 } from "./flowers";
 
-const CANDIDATES = 24;
-const MIN_SEPARATION = 10;
+const CANDIDATES = 40;
+const MIN_SEPARATION = 16;
 
 export function hashSeed(input: string): number {
   let h = 2166136261;
