@@ -36,7 +36,7 @@ export function parseGiftParams(search: string): GiftPayload {
 }
 
 export function buildGiftUrl(
-  origin: string,
+  baseUrl: string,
   payload: GiftPayload,
 ): string {
   const params = new URLSearchParams();
@@ -46,7 +46,8 @@ export function buildGiftUrl(
   params.set("de", truncate(payload.de, MAX_DE));
   params.set("para", truncate(payload.para, MAX_PARA));
   params.set("nota", truncate(payload.nota, MAX_NOTA));
-  return `${origin}/arreglo?${params.toString()}`;
+  const root = baseUrl.replace(/\/$/, "");
+  return `${root}/arreglo?${params.toString()}`;
 }
 
 export function isValidSendPayload(payload: GiftPayload): string | null {

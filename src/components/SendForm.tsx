@@ -31,7 +31,8 @@ export function SendForm({ counts, onCopied }: SendFormProps) {
     }
     setError(null);
     setBusy(true);
-    const url = buildGiftUrl(window.location.origin, payload);
+    const baseUrl = `${window.location.origin}${import.meta.env.BASE_URL}`;
+    const url = buildGiftUrl(baseUrl, payload);
     try {
       await navigator.clipboard.writeText(url);
       onCopied();
