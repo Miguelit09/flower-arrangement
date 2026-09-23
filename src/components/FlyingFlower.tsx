@@ -38,7 +38,7 @@ export function FlyingFlower({ flight, onDone }: FlyingFlowerProps) {
         opacity: phase === "end" ? 0.35 : 1,
       }}
     >
-      <Flower color={flight.color} size={52} />
+      <Flower color={flight.color} size={61} />
     </div>
   );
 }

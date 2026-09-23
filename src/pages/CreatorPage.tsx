@@ -22,6 +22,7 @@ export function CreatorPage() {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [toastVisible, setToastVisible] = useState(false);
   const basketRef = useRef<HTMLDivElement>(null);
+  const basketFlowersRef = useRef<PlacedFlower[]>([]);
   const countsRef = useRef(counts);
   countsRef.current = counts;
 
@@ -55,7 +56,13 @@ export function CreatorPage() {
     countsRef.current = nextCounts;
     setCounts(nextCounts);
 
-    const placed = placeFlower(color, `basket-${gardenFlower.id}-${Date.now()}`);
+    const placed = placeFlower(
+      color,
+      `basket-${gardenFlower.id}-${Date.now()}`,
+      Math.random,
+      basketFlowersRef.current,
+    );
+    basketFlowersRef.current = [...basketFlowersRef.current, placed];
     setFlights((prev) => [
       ...prev,
       {

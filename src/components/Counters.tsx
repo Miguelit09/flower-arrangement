@@ -15,7 +15,7 @@ export function Counters({ counts }: CountersProps) {
     <ul className={styles.list} aria-label="Contadores de flores">
       {FLOWER_COLORS.map((color) => (
         <li key={color} className={styles.item}>
-          <Flower color={color} size={28} title={FLOWER_LABELS[color]} />
+          <Flower color={color} size={33} title={FLOWER_LABELS[color]} />
           <span className={styles.label}>{FLOWER_LABELS[color]}</span>
           <span className={styles.count}>{counts[color]}</span>
         </li>

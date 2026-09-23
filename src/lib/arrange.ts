@@ -5,6 +5,9 @@ import {
   type PlacedFlower,
 } from "./flowers";
 
+const CANDIDATES = 24;
+const MIN_SEPARATION = 10;
+
 export function hashSeed(input: string): number {
   let h = 2166136261;
   for (let i = 0; i < input.length; i++) {
@@ -25,8 +28,9 @@ export function mulberry32(seed: number): () => number {
   };
 }
 
-/** Position inside an oval, values as percentages (0–100). */
-export function placeInOval(rng: () => number): Omit<PlacedFlower, "id" | "color"> {
+type Point = { x: number; y: number };
+
+function sampleOvalPoint(rng: () => number): Omit<PlacedFlower, "id" | "color"> {
   const angle = rng() * Math.PI * 2;
   const r = Math.sqrt(rng()) * 0.88;
   return {
@@ -37,12 +41,52 @@ export function placeInOval(rng: () => number): Omit<PlacedFlower, "id" | "color
   };
 }
 
+function minDistanceToExisting(point: Point, existing: Point[]): number {
+  if (existing.length === 0) return Infinity;
+  let min = Infinity;
+  for (const other of existing) {
+    const dx = point.x - other.x;
+    const dy = point.y - other.y;
+    const d = Math.hypot(dx, dy);
+    if (d < min) min = d;
+  }
+  return min;
+}
+
+/** Position inside an oval, values as percentages (0–100). */
+export function placeInOval(
+  rng: () => number,
+  existing: Point[] = [],
+): Omit<PlacedFlower, "id" | "color"> {
+  const candidates = Array.from({ length: CANDIDATES }, () => sampleOvalPoint(rng));
+
+  let best = candidates[0];
+  let bestDist = minDistanceToExisting(best, existing);
+  let bestValid: Omit<PlacedFlower, "id" | "color"> | null = null;
+  let bestValidDist = -1;
+
+  for (const candidate of candidates) {
+    const dist = minDistanceToExisting(candidate, existing);
+    if (dist > bestDist) {
+      best = candidate;
+      bestDist = dist;
+    }
+    if (dist >= MIN_SEPARATION && dist > bestValidDist) {
+      bestValid = candidate;
+      bestValidDist = dist;
+    }
+  }
+
+  return bestValid ?? best;
+}
+
 export function placeFlower(
   color: FlowerColor,
   id: string,
   rng: () => number = Math.random,
+  existing: Point[] = [],
 ): PlacedFlower {
-  return { id, color, ...placeInOval(rng) };
+  return { id, color, ...placeInOval(rng, existing) };
 }
 
 export function arrangeFromCounts(counts: FlowerCounts, seed: number): PlacedFlower[] {
@@ -51,7 +95,7 @@ export function arrangeFromCounts(counts: FlowerCounts, seed: number): PlacedFlo
   let i = 0;
   for (const color of FLOWER_COLORS) {
     for (let n = 0; n < counts[color]; n++) {
-      flowers.push(placeFlower(color, `seeded-${i++}`, rng));
+      flowers.push(placeFlower(color, `seeded-${i++}`, rng, flowers));
     }
   }
   return flowers;

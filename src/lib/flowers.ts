@@ -14,7 +14,7 @@ export type PlacedFlower = {
 };
 
 export const MAX_PER_COLOR = 25;
-export const MAX_GARDEN_FLOWERS = 8;
+export const MAX_GARDEN_FLOWERS = 40;
 export const SPAWN_MIN_MS = 600;
 export const SPAWN_MAX_MS = 1400;
 

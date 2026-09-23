@@ -60,7 +60,7 @@ function GardenFlowerItem({
     >
       <Flower
         color={flower.color}
-        size={56}
+        size={66}
         className={`${flowerStyles.spawn} ${flowerStyles.sway}`}
         title={
           disabled

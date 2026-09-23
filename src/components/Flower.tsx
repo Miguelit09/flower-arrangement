@@ -25,11 +25,9 @@ const CORE_FILLS: Record<FlowerColor, string> = {
   lavanda: "var(--flower-lavanda)",
 };
 
-function FlowerSvg({ color }: { color: FlowerColor }) {
-  const petal = PETAL_FILLS[color];
-  const core = CORE_FILLS[color];
+function PetalEllipses({ fill, opacity = 0.95 }: { fill: string; opacity?: number }) {
   return (
-    <svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden>
+    <>
       {Array.from({ length: 6 }, (_, i) => {
         const angle = (i * 60 * Math.PI) / 180;
         const cx = 32 + Math.cos(angle) * 14;
@@ -41,12 +39,26 @@ function FlowerSvg({ color }: { color: FlowerColor }) {
             cy={cy}
             rx="10"
             ry="14"
-            fill={petal}
+            fill={fill}
             transform={`rotate(${i * 60} ${cx} ${cy})`}
-            opacity={0.95}
+            opacity={opacity}
           />
         );
       })}
+    </>
+  );
+}
+
+function FlowerSvg({ color }: { color: FlowerColor }) {
+  const petal = PETAL_FILLS[color];
+  const core = CORE_FILLS[color];
+  return (
+    <svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden>
+      <g transform="translate(32 32) scale(1.08) translate(-32 -32)">
+        <PetalEllipses fill={core} opacity={1} />
+        <circle cx="32" cy="32" r="10" fill={core} />
+      </g>
+      <PetalEllipses fill={petal} />
       <circle cx="32" cy="32" r="10" fill={core} />
       <circle cx="32" cy="32" r="5" fill="var(--flower-center)" opacity={0.85} />
     </svg>
@@ -55,7 +67,7 @@ function FlowerSvg({ color }: { color: FlowerColor }) {
 
 export function Flower({
   color,
-  size = 48,
+  size = 57,
   className,
   style,
   onClick,

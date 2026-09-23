@@ -39,7 +39,7 @@ export function Basket({
             >
               <Flower
                 color={flower.color}
-                size={size === "lg" ? 64 : 44}
+                size={size === "lg" ? 76 : 52}
                 className={landingId === flower.id ? flowerStyles.land : undefined}
                 title={
                   interactive && onRemove
